@@ -1,0 +1,35 @@
+name: API Quality Tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Run API automated tests
+        run: mvn --batch-mode clean test
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-evidence
+          path: |
+            target/surefire-reports/
+            target/allure-results/
+          if-no-files-found: ignore
+          retention-days: 14

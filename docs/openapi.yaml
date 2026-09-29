@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: API Quality Engineering Lab
+  version: 1.0.0
+paths:
+  /api/products:
+    get:
+      summary: List products
+      responses:
+        '200': { description: Products page }
+    post:
+      summary: Create product
+      parameters:
+        - in: header
+          name: X-API-Key
+          required: true
+          schema: { type: string }
+      responses:
+        '201': { description: Product created }
+        '400': { description: Invalid payload }
+        '401': { description: Invalid or missing API key }
+        '409': { description: Duplicate SKU }
+  /api/products/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: integer, format: int64 }
+    get:
+      summary: Get product
+      responses:
+        '200': { description: Product found }
+        '404': { description: Product not found }
+    put:
+      summary: Update product
+      responses:
+        '200': { description: Product updated }
+        '400': { description: Invalid payload }
+        '401': { description: Invalid or missing API key }
+        '404': { description: Product not found }
+        '409': { description: Duplicate SKU }
+    delete:
+      summary: Delete product
+      responses:
+        '204': { description: Product deleted }
+        '401': { description: Invalid or missing API key }
+        '404': { description: Product not found }
